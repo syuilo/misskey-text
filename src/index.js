@@ -20,7 +20,16 @@ function analyze(source) {
 				content: mention.substr(1)
 			});
 			source = source.substr(mention.length);
-		} 
+		}
+		// Hashtag
+		else if (/^#[^\s]+/.test(source)) {
+			const hashtag = source.match(/^#[^\s]+/)[0];
+			tokens.push({
+				type: 'hashtag',
+				content: hashtag.substr(1)
+			});
+			source = source.substr(hashtag.length);
+		}
 		// Text
 		else {
 			const last = tokens.pop();

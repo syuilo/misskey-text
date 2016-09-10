@@ -1,11 +1,11 @@
 function analyze(source) {
 	
-	const tokens = [];
+	var tokens = [];
 
 	while (source != '') {
 		// URL
 		if (/^https?:\/\/[a-zA-Z\-~_\.:%\?=&]+/.test(source)) {
-			const link = source.match(/^https?:\/\/[a-zA-Z\-~_\.:%\?=&]+/)[0];
+			var link = source.match(/^https?:\/\/[a-zA-Z\-~_\.:%\?=&]+/)[0];
 			tokens.push({
 				type: 'link',
 				content: link
@@ -14,7 +14,7 @@ function analyze(source) {
 		}
 		// Mention
 		else if (/^@[a-zA-Z\-]+/.test(source)) {
-			const mention = source.match(/^@[a-zA-Z\-]+/)[0];
+			var mention = source.match(/^@[a-zA-Z\-]+/)[0];
 			tokens.push({
 				type: 'mention',
 				content: mention.substr(1)
@@ -23,7 +23,7 @@ function analyze(source) {
 		}
 		// Hashtag
 		else if (/^#[^\s]+/.test(source)) {
-			const hashtag = source.match(/^#[^\s]+/)[0];
+			var hashtag = source.match(/^#[^\s]+/)[0];
 			tokens.push({
 				type: 'hashtag',
 				content: hashtag.substr(1)
@@ -32,7 +32,7 @@ function analyze(source) {
 		}
 		// Text
 		else {
-			const last = tokens.pop();
+			var last = tokens.pop();
 			// 末尾がテキストなら連結
 			if (last == undefined || last.type != 'text') {
 				tokens.push(last);

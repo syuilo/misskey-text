@@ -34,7 +34,12 @@ function analyze(source) {
 		else {
 			var last = tokens.pop();
 			// 末尾がテキストなら連結
-			if (last == undefined || last.type != 'text') {
+			if (last == undefined) {
+				tokens.push({
+					type: 'text',
+					content: source[0]
+				});
+			} else if (last.type != 'text') {
 				tokens.push(last);
 				tokens.push({
 					type: 'text',

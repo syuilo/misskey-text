@@ -4,7 +4,7 @@ function analyze(source) {
 
 	while (source != '') {
 		// URL
-		if (/^https?:\/\/[a-zA-Z\-~_\.:%\?=&]+/.test(source)) {
+		if (/^https?:\/\/[\\a-zA-Z\-~_\.:%\?=&]+/.test(source)) {
 			var link = source.match(/^https?:\/\/[a-zA-Z\-~_\.:%\?=&]+/)[0];
 			tokens.push({
 				type: 'link',

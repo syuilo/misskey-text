@@ -4,8 +4,8 @@ function analyze(source) {
 
 	while (source != '') {
 		// URL
-		if (/^https?:\/\/[\/a-zA-Z0-9\-~_\.:%#\?=&]+/.test(source)) {
-			var link = source.match(/^https?:\/\/[\/a-zA-Z0-9\-~_\.:%#\?=&]+/)[0];
+		if (/^https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,}/.test(source)) {
+			var link = source.match(/^https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,}/)[0];
 			tokens.push({
 				type: 'link',
 				content: link

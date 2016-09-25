@@ -50,7 +50,7 @@ function analyze(source) {
 		// Hashtag
 		else if (new RegExp('^' + hashtagRegExp.source).test(source)) {
 			var hashtag = source.match(new RegExp('^' + hashtagRegExp.source))[0];
-			addText(' ');
+			addText(source[0]);
 			tokens.push({
 				type: 'hashtag',
 				content: hashtag.substr(2)

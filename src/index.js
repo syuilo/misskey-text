@@ -1,5 +1,5 @@
 var urlRegExp = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-var mentionRegExp = /@[a-zA-Z\-]+/;
+var mentionRegExp = /@[a-zA-Z0-9\-]+/;
 var hashtagRegExp = /\s#[^\s]+/;
 
 function analyze(source) {

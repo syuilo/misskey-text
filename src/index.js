@@ -1,70 +1,66 @@
-var urlRegExp = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-var mentionRegExp = /@[a-zA-Z0-9\-]+/;
-var hashtagRegExp = /\s#[^\s]+/;
+const elements = [
+	require('./elements/url'),
+	require('./elements/mention'),
+	require('./elements/hashtag')
+];
 
 function analyze(source) {
-	
-	var tokens = [];
 
-	function addText(text) {
-		var last = tokens.pop();
-		// 末尾がテキストなら連結
-		if (last == undefined) {
-			tokens.push({
+	if (source == '') {
+		return null;
+	}
+
+	const tokens = [];
+
+	function push(token) {
+		if (token != null) {
+			tokens.push(token);
+			source = source.substr(token.content.length);
+		}
+	}
+
+	let i = 0;
+
+	// パース
+	while (source != '') {
+		const parsed = elements.some(el => {
+			if (el.test(source, i)) {
+				let tokens = el.parse(source);
+				if (!Array.isArray(tokens)) {
+					tokens = [tokens];
+				}
+				tokens.forEach(push);
+				return true;
+			}
+		});
+
+		if (!parsed) {
+			push({
 				type: 'text',
-				content: text
+				content: source[0]
 			});
-		} else if (last.type != 'text') {
-			tokens.push(last);
-			tokens.push({
+		}
+
+		i++;
+	}
+
+	// テキストを纏める
+	tokens[0] = [tokens[0]];
+	return tokens.reduce((a, b) => {
+		if (a[a.length - 1].type == 'text' && b.type == 'text') {
+			const tail = a.pop();
+			return a.concat({
 				type: 'text',
-				content: text
+				content: tail.content + b.content
 			});
 		} else {
-			tokens.push({
-				type: 'text',
-				content: last.content + text
-			});
+			if (Array.isArray(a)) {
+				return a.concat(b);
+			} else {
+				return [a, b];
+			}
 		}
-	}
-
-	while (source != '') {
-		// URL
-		if (new RegExp('^' + urlRegExp.source).test(source)) {
-			var link = source.match(new RegExp('^' + urlRegExp.source))[0];
-			tokens.push({
-				type: 'link',
-				content: link
-			});
-			source = source.substr(link.length);
-		}
-		// Mention
-		else if (new RegExp('^' + mentionRegExp.source).test(source)) {
-			var mention = source.match(new RegExp('^' + mentionRegExp.source))[0];
-			tokens.push({
-				type: 'mention',
-				content: mention.substr(1)
-			});
-			source = source.substr(mention.length);
-		}
-		// Hashtag
-		else if (new RegExp('^' + hashtagRegExp.source).test(source)) {
-			var hashtag = source.match(new RegExp('^' + hashtagRegExp.source))[0];
-			addText(source[0]);
-			tokens.push({
-				type: 'hashtag',
-				content: hashtag.substr(2)
-			});
-			source = source.substr(hashtag.length);
-		}
-		// Text
-		else {
-			addText(source[0]);
-			source = source.substr(1);
-		}
-	}
-
-	return tokens;
+	});
 }
 
 module.exports = analyze;

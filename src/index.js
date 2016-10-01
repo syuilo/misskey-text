@@ -54,11 +54,7 @@ function analyze(source) {
 				content: tail.content + b.content
 			});
 		} else {
-			if (Array.isArray(a)) {
-				return a.concat(b);
-			} else {
-				return [a, b];
-			}
+			return a.concat(b);
 		}
 	});
 }

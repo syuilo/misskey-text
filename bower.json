@@ -1,5 +1,5 @@
 {
   "name": "misskey-text",
-  "version": "1.0.2",
-  "main": "src/index.js"
+  "version": "1.0.3",
+  "main": "dist/index.js"
 }

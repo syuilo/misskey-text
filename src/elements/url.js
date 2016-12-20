@@ -1,4 +1,4 @@
-const regexp = /https?:\/\/[\w\/:%#@\$&\?!\(\)~\.=\+\-]+/;
+const regexp = /https?:\/\/[\w\/:%#@\$&\?!\(\)\[\]~\.=\+\-]+/;
 
 module.exports = {
 	test: x => new RegExp('^' + regexp.source).test(x),
